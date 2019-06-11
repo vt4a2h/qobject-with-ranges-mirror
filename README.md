@@ -1,4 +1,4 @@
-## General information:
+## General information
 Some experiments of using QObject with ranges for iterating through its children. This is only a proof of concept, so proper forward iterator for tree is not implemented. It means, that the view is not that lazy now. But it have to be of course.
 See test folder for further details.
 
@@ -16,7 +16,7 @@ See test folder for further details.
 * Laziness (at some corner cases you probably want to preserve result range, which might be slightly less efficient)
 * Users need to get used to this syntax and keep all of the limitations and in mind
 
-## Build instruction
+## Build instructions
 ```
 git clone --recursive git@git.qt.io:vifanask/qobject-with-ranges.git
 cd qobject-with-ranges/test
