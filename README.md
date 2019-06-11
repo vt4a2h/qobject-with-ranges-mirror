@@ -14,7 +14,7 @@ See test folder for further details.
 
 ## Cons
 * Laziness (at some corner cases you probably want to preserve result range, which might be slightly less efficient)
-* Users need to get used to this syntax and keep all of the limitations and in mind
+* Users need to get used to this syntax and keep all of the limitations in mind
 
 ## Build instructions
 ```
