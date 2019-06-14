@@ -18,6 +18,12 @@ include_directories(SYSTEM ${CMAKE_SOURCE_DIR}/../range-v3/include
 find_package(Qt5Core)
 
 add_executable(${PROJECT_NAME} "main.cpp" "FooBar.h" "../src/qrange.h")
+
+if(APPLE AND ${CMAKE_VERSION} VERSION_LESS "3.15.0" AND ${CMAKE_CXX_COMPILER_ID} MATCHES "AppleClang")
+  set(CMAKE_CXX20_STANDARD_COMPILE_OPTION "-std=c++2a")
+  set(CMAKE_CXX20_EXTENSION_COMPILE_OPTION "-std=gnu++2a")
+endif()
+
 set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 20)
 set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_EXTENSIONS OFF)
 
