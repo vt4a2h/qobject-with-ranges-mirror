@@ -2,7 +2,12 @@ cmake_minimum_required(VERSION 3.0.0)
 
 project(qobjects_ranges VERSION 0.1 LANGUAGES CXX)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fconcepts")
+include(CheckCXXCompilerFlag)
+
+check_cxx_compiler_flag("-fconcepts" CXX_CONCEPTS_FLAG)
+if(CXX_CONCEPTS_FLAG)
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fconcepts")
+endif()
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
