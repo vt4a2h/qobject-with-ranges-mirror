@@ -15,35 +15,7 @@ namespace qt
 
     namespace detail
     {
-        template <class T = QObject>
-        class children_view : public ranges::view_facade<children_view<T>>
-        {
-            friend ranges::range_access;
-
-            T *obj;
-            Qt::FindChildOptions opts;
-
-            struct cursor;
-
-            cursor begin_cursor()
-            {
-                return cursor(obj, opts);
-            }
-
-        public:
-            children_view() = default;
-            explicit children_view(T *o, Qt::FindChildOptions opts = Qt::FindChildrenRecursively)
-                : obj(o)
-                , opts(opts)
-            {}
-
-            explicit children_view(T &o, Qt::FindChildOptions opts = Qt::FindChildrenRecursively)
-                : children_view(&o, opts)
-            {}
-        };
-
-        template <class T>
-        struct children_view<T>::cursor
+        struct cursor
         {
             std::shared_ptr<QObjectList> children;
             int current_index = 0;
@@ -75,6 +47,32 @@ namespace qt
 
             cursor() = default;
         };
+
+        template <class T = QObject>
+        class children_view : public ranges::view_facade<children_view<T>>
+        {
+            friend ranges::range_access;
+
+            T *obj;
+            Qt::FindChildOptions opts;
+
+            cursor begin_cursor()
+            {
+                return cursor(obj, opts);
+            }
+
+        public:
+            children_view() = default;
+            explicit children_view(T *o, Qt::FindChildOptions opts = Qt::FindChildrenRecursively)
+                : obj(o)
+                , opts(opts)
+            {}
+
+            explicit children_view(T &o, Qt::FindChildOptions opts = Qt::FindChildrenRecursively)
+                : children_view(&o, opts)
+            {}
+        };
+
     }
 
     const auto children = ranges::make_pipeable([](auto &&o) { return detail::children_view(o); });
