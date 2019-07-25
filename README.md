@@ -25,4 +25,5 @@ cd build
 cmake ..
 make
 ```
-Tested on Linux with GCC only.
+
+Tested on Linux and Mac with GCC and Clang. Clang is required for coroutines support.
