@@ -33,8 +33,8 @@ namespace qt::detail
         }
 
         explicit cursor(const QObject *o, Qt::FindChildOptions opts)
-                : children(std::make_shared<QObjectList>(
-                o ? o->findChildren<QObject*>(QString(), opts) : QObjectList()))
+            : children(std::make_shared<QObjectList>(
+                  o ? o->findChildren<QObject*>(QString(), opts) : QObjectList()))
         {}
 
         cursor() = default;
@@ -56,12 +56,12 @@ namespace qt::detail
     public:
         children_view() = default;
         explicit children_view(T *o, Qt::FindChildOptions opts = Qt::FindChildrenRecursively)
-                : obj(o)
-                , opts(opts)
+            : obj(o)
+            , opts(opts)
         {}
 
         explicit children_view(T &o, Qt::FindChildOptions opts = Qt::FindChildrenRecursively)
-                : children_view(&o, opts)
+            : children_view(&o, opts)
         {}
     };
 } // qt::detail
