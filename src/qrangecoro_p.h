@@ -55,7 +55,7 @@ namespace qt::detail
         {}
 
         explicit children_view(T &o, Qt::FindChildOptions opts = Qt::FindChildrenRecursively)
-             : children_view(&o, opts)
+            : children_view(&o, opts)
         {}
     };
 
@@ -80,7 +80,7 @@ namespace qt::detail
         }
 
         explicit cursor(cppcoro::recursive_generator<QObject*>::iterator it)
-                : it(it)
+            : it(it)
         {}
 
         cursor() = default;
