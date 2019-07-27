@@ -4,6 +4,10 @@
 
 #include "FooBar.h"
 
+#ifdef NDEBUG
+#include "benchmarks.h"
+#endif // NDEBUG
+
 #include "qrange.h"
 
 int main(int argc, char *argv[])
@@ -48,6 +52,10 @@ int main(int argc, char *argv[])
         assert(children.size() == 1);
         assert(children.at(0) == l4);
     }
+
+#ifdef NDEBUG
+    runBenchmarks();
+#endif // NDEBUG
 
     return 0;
 }

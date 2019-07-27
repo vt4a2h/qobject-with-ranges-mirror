@@ -29,7 +29,12 @@ include_directories(SYSTEM ${CMAKE_SOURCE_DIR}/../range-v3/include
 
 find_package(Qt5Core)
 
-add_executable(${PROJECT_NAME} "main.cpp" "FooBar.h" "../src/qrange.h" ${QRANGE_IMPL_INCLUDE})
+set(INCLUDES "FooBar.h" "../src/qrange.h" ${QRANGE_IMPL_INCLUDE})
+if(CMAKE_BUILD_TYPE EQUAL "RELEASE")
+    set(INCLUDES "${INCLUDES} benchmarks.h")
+endif(CMAKE_BUILD_TYPE EQUAL "RELEASE")
+
+add_executable(${PROJECT_NAME} "main.cpp" ${INCLUDES})
 
 if(APPLE AND ${CMAKE_VERSION} VERSION_LESS "3.15.0" AND ${CMAKE_CXX_COMPILER_ID} MATCHES "AppleClang")
   set(CMAKE_CXX20_STANDARD_COMPILE_OPTION "-std=c++2a")
