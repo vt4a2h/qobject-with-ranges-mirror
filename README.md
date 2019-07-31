@@ -1,6 +1,40 @@
 ## General information
-Some experiments of using QObject with ranges for iterating through its children. This is only a proof of concept, so proper forward iterator for tree is not implemented. It means, that the view is not that lazy now. But it have to be of course.
-See test folder for further details.
+Some experiments on using QObject with ranges for iterating through its children. There are two implementations available: 
+* Non-lazy, that used as a fallback. Strictly speaking, this is old and well-known QObject::findChildren<QObject*> under the hood.
+* Lazy. Coroutine-based implementation.
+
+## Examples
+```cpp
+QObject root;
+
+// Create some children...
+
+for (auto &&c : root | qt::children) {
+    // Process all children recursively
+}
+
+for (auto &&c : root |  qt::find_children(Qt::FindDirectChildrenOnly)) {
+    // Process direct children only
+}
+
+for (auto &&c : root | qt::children | qt::with_type<Foo*>) {
+    // Process all children with type Foo
+}
+
+for (auto &&c : root | qt::children | qt::by_name("foo")) {
+    // Process all children with name "foo"
+}
+
+for (auto &&c : root | qt::children | qt::by_re(QRegularExpression("^b"))) {
+    // Process all children with name starts with "b"
+}
+
+// Copy all children to std::vector
+auto children = ranges::to<std::vector>(root | qt::children);
+
+// This also works, but is going to be deprecated
+std::vector<QObject*> otherChildren = root | qt::children;
+```
 
 ## Pros
 * Easy to add new functionality (you don't need to touch class interface)
@@ -17,7 +51,7 @@ See test folder for further details.
 * Users need to get used to this syntax and keep all of the limitations in mind
 
 ## Build instructions
-```
+```bash
 git clone --recursive git@git.qt.io:vifanask/qobject-with-ranges.git
 cd qobject-with-ranges/test
 mkdir build
