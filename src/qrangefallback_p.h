@@ -7,10 +7,31 @@
 
 namespace qt::detail
 {
+    using ObjectVector = std::vector<QObject*>;
+
+    void findChildren(const QObject &o, Qt::FindChildOptions opts, ObjectVector &out)
+    {
+        for (auto &&c : o.children()) {
+            out.push_back(c);
+            if (opts == Qt::FindChildrenRecursively) {
+                findChildren(*c, opts, out);
+            }
+        }
+    }
+
+    ObjectVector children(const QObject &o, Qt::FindChildOptions opts)
+    {
+        ObjectVector result;
+        findChildren(o, opts, result);
+        result.shrink_to_fit();
+
+        return result;
+    }
+
     struct cursor
     {
-        std::shared_ptr<QObjectList> children;
-        int current_index = 0;
+        std::shared_ptr<ObjectVector> children;
+        std::size_t current_index = 0;
 
         decltype(auto) read() const
         {
@@ -24,7 +45,7 @@ namespace qt::detail
 
         auto equal(ranges::default_sentinel_t) const
         {
-            return current_index == children->count();
+            return current_index == children->size();
         }
 
         auto equal(const cursor &that) const
@@ -33,8 +54,7 @@ namespace qt::detail
         }
 
         explicit cursor(const QObject *o, Qt::FindChildOptions opts)
-            : children(std::make_shared<QObjectList>(
-                  o ? o->findChildren<QObject*>(QString(), opts) : QObjectList()))
+            : children(std::make_shared<ObjectVector>(o ? detail::children(*o, opts) : ObjectVector()))
         {}
 
         cursor() = default;
