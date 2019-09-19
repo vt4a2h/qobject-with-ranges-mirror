@@ -106,18 +106,18 @@ void TestQRange::benchmarks_data()
 
     Runner oldF = [](const std::shared_ptr<QObject> &obj){
         for (auto &&c : obj->findChildren<QObject*>()) {
-            c->setObjectName("foo");
+            c->setObjectName(QStringLiteral("foo"));
         }
     };
     Runner newF = [](const std::shared_ptr<QObject> &obj){
         for (auto &&c : obj.get() | qt::find_children(Qt::FindChildrenRecursively)) {
-            c->setObjectName("foo");
+            c->setObjectName(QStringLiteral("foo"));
         }
     };
     Runner newCopyF = [](const std::shared_ptr<QObject> &obj) {
         const std::vector<QObject*> d = obj.get() | qt::find_children(Qt::FindChildrenRecursively);
         for (auto &&c : d) {
-            c->setObjectName("foo");
+            c->setObjectName(QStringLiteral("foo"));
         }
     };
 
